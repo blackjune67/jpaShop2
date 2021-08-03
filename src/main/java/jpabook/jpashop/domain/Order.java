@@ -36,6 +36,11 @@ public class Order {
     @Enumerated(EnumType.STRING)
     private OrderStatus status;
 
+    @OneToOne
+    @JoinColumn(name = "DELIVERY_ID")
+    private Delivery delivery;
+
+
     //양방향 연관관계 편의 메소드
     public void addOrderItem(OrderItem orderItem) {
         orderItems.add(orderItem);
