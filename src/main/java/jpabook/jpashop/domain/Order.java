@@ -5,6 +5,8 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
+import static javax.persistence.CascadeType.*;
+
 @Entity
 @Table(name = "ORDERS")
 public class Order extends BaseEntity  {
@@ -21,14 +23,14 @@ public class Order extends BaseEntity  {
     /*
     * 단방향 설계를 하고 나서 필요에 의해서 양방향을 추후에 결정한다.
     * */
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "MEMBER_ID")
     private Member member;
 
     /*
     * 양방향
     * */
-    @OneToMany(mappedBy = "order")
+    @OneToMany(mappedBy = "order", cascade = ALL)
     private List<OrderItem> orderItems = new ArrayList<>();
 
     private LocalDateTime orderDate; //localDateTime은 자동맵핑이 됨.
@@ -36,7 +38,7 @@ public class Order extends BaseEntity  {
     @Enumerated(EnumType.STRING)
     private OrderStatus status;
 
-    @OneToOne
+    @OneToOne(fetch = FetchType.LAZY, cascade = ALL) //주문을 하면 delivery도 같이 저장된다.
     @JoinColumn(name = "DELIVERY_ID")
     private Delivery delivery;
 
